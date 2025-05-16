@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip);
 
 const PieChart = ({
   labels,
@@ -34,7 +34,6 @@ const PieChart = ({
     labels: isEmptyPie ? ['Empty'] : filteredLabels,
     datasets: [
       {
-        label: 'Values',
         data: isEmptyPie ? [1] : filteredValues,
         backgroundColor: isEmptyPie ? ['#f0f0f0'] : filteredBG,
         borderColor: showBorder ? (isEmptyPie ? ['#ccc'] : filteredBorder) : 'transparent',
@@ -153,16 +152,7 @@ const PieChart = ({
     devicePixelRatio: 3,
     plugins: {
       legend: {
-        display: true,
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-            weight: 'bold'
-          },
-          usePointStyle: true,
-          padding: 20
-        }
+        display: false
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -174,7 +164,12 @@ const PieChart = ({
           size: 14
         },
         padding: 12,
-        cornerRadius: 6
+        cornerRadius: 6,
+        callbacks: {
+          label: function(context) {
+            return `Value: ${context.raw}`;
+          }
+        }
       }
     }
   };

@@ -6,10 +6,9 @@ import {
   CategoryScale,
   LinearScale,
   Tooltip,
-  Legend,
 } from 'chart.js';
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
 const BarChart = ({
   labels,
@@ -41,7 +40,6 @@ const BarChart = ({
     labels: filteredLabels,
     datasets: [
       {
-        label: 'Values',
         data: filteredValues,
         backgroundColor: filteredBG,
         borderColor: showBorder ? filteredBorder : 'transparent',
@@ -66,12 +64,6 @@ const BarChart = ({
       }
     });
   }, [imageURLs, filteredLabels]);
-
-  useEffect(() => {
-    if (chartRef.current) {
-      chartRef.current.update();
-    }
-  }, [valueFontSize, showBorder, borderThickness]);
 
   const imagePlugin = {
     id: 'imagePlugin',
@@ -150,16 +142,7 @@ const BarChart = ({
     devicePixelRatio: 3,
     plugins: {
       legend: {
-        display: true,
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-            weight: 'bold'
-          },
-          usePointStyle: true,
-          padding: 20
-        }
+        display: false
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -171,7 +154,12 @@ const BarChart = ({
           size: 14
         },
         padding: 12,
-        cornerRadius: 6
+        cornerRadius: 6,
+        callbacks: {
+          label: function(context) {
+            return `Value: ${context.parsed.y}`;
+          }
+        }
       }
     },
     scales: {
