@@ -1,0 +1,22 @@
+
+
+@media (min-width : 768px){
+  .chart{
+    display: flex;
+    flex-direction: row;
+  }
+  .sidebar, .chart-display{
+    flex : 1
+  }
+  .chart-section{
+    min-height: 50vh;
+  }
+}
+
+@media (max-width : 767px){
+  .chart{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
