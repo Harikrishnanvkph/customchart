@@ -34,7 +34,7 @@ const PieChart = ({
     labels: isEmptyPie ? ['Empty'] : filteredLabels,
     datasets: [
       {
-        label: 'Fruits',
+        label: 'Values',
         data: isEmptyPie ? [1] : filteredValues,
         backgroundColor: isEmptyPie ? ['#f0f0f0'] : filteredBG,
         borderColor: showBorder ? (isEmptyPie ? ['#ccc'] : filteredBorder) : 'transparent',
@@ -149,9 +149,34 @@ const PieChart = ({
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
+    devicePixelRatio: 3,
     plugins: {
-      legend: { display: false },
-    },
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold'
+          },
+          usePointStyle: true,
+          padding: 20
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleFont: {
+          size: 16,
+          weight: 'bold'
+        },
+        bodyFont: {
+          size: 14
+        },
+        padding: 12,
+        cornerRadius: 6
+      }
+    }
   };
 
   return (

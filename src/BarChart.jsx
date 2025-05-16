@@ -24,7 +24,6 @@ const BarChart = ({
   const chartRef = useRef(null);
   const imagesRef = useRef({});
 
-  // Filter indices of visible labels
   const filteredIndices = labels
     .map((label, i) => (visibleLabels.includes(label) ? i : null))
     .filter((i) => i !== null);
@@ -42,7 +41,7 @@ const BarChart = ({
     labels: filteredLabels,
     datasets: [
       {
-        label: 'Dataset',
+        label: 'Values',
         data: filteredValues,
         backgroundColor: filteredBG,
         borderColor: showBorder ? filteredBorder : 'transparent',
@@ -51,7 +50,6 @@ const BarChart = ({
     ],
   };
 
-  // Load images for visible labels
   useEffect(() => {
     filteredLabels.forEach((label) => {
       const url = imageURLs[label];
@@ -69,7 +67,6 @@ const BarChart = ({
     });
   }, [imageURLs, filteredLabels]);
 
-  // Trigger chart update when font size or border props change
   useEffect(() => {
     if (chartRef.current) {
       chartRef.current.update();
@@ -100,7 +97,6 @@ const BarChart = ({
         ctx.rect(x - barWidth / 2, y, barWidth, barHeight);
         ctx.clip();
 
-        // Maintain aspect ratio inside bar
         const aspectRatio = img.width / img.height;
         let drawWidth = barWidth;
         let drawHeight = barHeight;
@@ -150,12 +146,60 @@ const BarChart = ({
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
+    devicePixelRatio: 3,
     plugins: {
-      legend: { display: false },
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold'
+          },
+          usePointStyle: true,
+          padding: 20
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleFont: {
+          size: 16,
+          weight: 'bold'
+        },
+        bodyFont: {
+          size: 14
+        },
+        padding: 12,
+        cornerRadius: 6
+      }
     },
     scales: {
-      y: { beginAtZero: true, max: Math.max(...filteredValues, 0) + 20 },
-    },
+      y: {
+        beginAtZero: true,
+        max: Math.max(...filteredValues, 0) + 20,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)',
+          drawBorder: false
+        },
+        ticks: {
+          font: {
+            size: 12
+          }
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          font: {
+            size: 12,
+            weight: 'bold'
+          }
+        }
+      }
+    }
   };
 
   return (
